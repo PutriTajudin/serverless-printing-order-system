@@ -1,9 +1,13 @@
 # Serverless Printing Order System
 
 **Nama:** Putri Tajudin
+
 **NIM:** 24/535824/TK/59469 
+
 **Mata kuliah:** Cloud Computing (individual project)  
+
 **Track:** Track C (Serverless)  
+
 **Tahap:** Week 12 (Design & AWS Setup)
 
 ## Deskripsi
