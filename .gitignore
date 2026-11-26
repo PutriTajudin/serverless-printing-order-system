@@ -1,0 +1,30 @@
+# Kredensial dan konfigurasi lokal (JANGAN di-commit)
+.env
+.env.*
+.aws/
+credentials
+credentials.*
+*.pem
+*.ppk
+labsuser*
+frontend/config.js
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Hasil packaging Lambda
+build/
+package/
+*.zip
+
+# Dokumen PDF (termasuk PDF uji) tidak diunggah
+*.pdf
+
+# Editor dan OS
+.vscode/
+.DS_Store
+Thumbs.db
