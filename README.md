@@ -1,7 +1,7 @@
 # Serverless Printing Order System
 
-**Nama:** TODO  
-**NIM:** TODO  
+**Nama:** Putri Tajudin  
+**NIM:** 24/535824/TK/59469  
 **Mata kuliah:** Cloud Computing (individual project)  
 **Track:** Track C (Serverless)  
 **Tahap:** Week 12 (Design & AWS Setup)
@@ -20,9 +20,9 @@ Pada Week 12, repository ini berisi rancangan arsitektur, starter code, kode fea
 
 ## Arsitektur
 
-![Architecture diagram](docs/architecture-diagram.png)
+Diagram berikut adalah rancangan arsitektur target yang akan diimplementasikan, bukan kondisi aplikasi saat ini.
 
-Sumber diagram: [docs/architecture-diagram.drawio](docs/architecture-diagram.drawio).
+![Architecture diagram](docs/architecture-diagram.png)
 
 1. Frontend memanggil `OrderAPI` melalui Lambda Function URL (HTTPS).
 2. `OrderAPI` mengelola data pesanan di S3 (`orders/{orderId}.json`) dan memberikan presigned URL kepada frontend.
@@ -31,7 +31,7 @@ Sumber diagram: [docs/architecture-diagram.drawio](docs/architecture-diagram.dra
 5. `PDFProcessor` memvalidasi PDF, menghitung jumlah halaman dan estimasi biaya, lalu menyimpan hasilnya ke S3.
 6. Kedua Lambda memakai IAM `LabRole` dan mencatat log ke CloudWatch.
 
-Diagram menggambarkan arsitektur target. Bagian yang sudah diuji pada Week 12 tercantum di [Hasil pengujian Week 12](#hasil-pengujian-week-12).
+Komponen yang sudah diuji pada Week 12 tercantum di [Hasil pengujian Week 12](#hasil-pengujian-week-12).
 
 ## AWS services dan technology stack
 
@@ -83,7 +83,6 @@ Rencana endpoint `OrderAPI`: `POST /orders`, `GET /orders`, `GET /orders/{id}`, 
 │       ├── lambda_function.py      Feasibility test validasi PDF, halaman, dan biaya
 │       └── requirements.txt        Dependency PDFProcessor (pypdf)
 ├── docs/
-│   ├── architecture-diagram.drawio Sumber diagram arsitektur
 │   ├── architecture-diagram.png    Diagram arsitektur
 │   └── deployment-plan.md          Konfigurasi AWS dan langkah deployment
 ├── infrastructure/
@@ -99,26 +98,19 @@ Rencana endpoint `OrderAPI`: `POST /orders`, `GET /orders`, `GET /orders/{id}`, 
 
 Pengujian dilakukan di AWS Academy Cloud Foundations Sandbox dengan data dummy. Evidence dikumpulkan terpisah dari repository.
 
-| Pengujian | Hasil |
+| Komponen | Hasil |
 |---|---|
-| S3 bucket provisioning (prefix `uploads/` dan `orders/`) | Berhasil |
-| Upload dan akses file PDF di S3 | Berhasil |
-| Invocation awal `OrderAPI` (Hello World) | Berhasil |
-| Koneksi Lambda–S3 | Berhasil: HTTP 200, `pdfRead`, `jsonWritten`, dan `jsonRead` bernilai `true` |
+| S3 bucket dan prefix `uploads/`, `orders/` | Berhasil dibuat; upload dan akses PDF berhasil |
+| `OrderAPI` | Invocation Hello World berhasil |
+| Koneksi Lambda–S3 | Berhasil: HTTP 200, PDF terbaca, JSON berhasil ditulis dan dibaca kembali |
 | Lambda Function URL | Berhasil diakses dari browser dengan respons starter `OrderAPI` |
-| Invocation awal `PDFProcessor` | Berhasil |
-| S3 Event Trigger | Berhasil: upload PDF ke `uploads/` memicu `PDFProcessor`, terlihat di CloudWatch Logs |
-| Deployment dependency pypdf (ZIP) | Berhasil setelah struktur ZIP diperbaiki |
-| Penghitungan halaman PDF | Berhasil: dokumen uji terdeteksi 8 halaman |
-| Estimasi biaya | Sebagian terverifikasi: formula menghasilkan Rp4.000, tetapi nilai `totalCost` tidak terlihat lengkap pada evidence |
+| `PDFProcessor` dan S3 Event Trigger | Berhasil: upload PDF ke `uploads/` memicu `PDFProcessor`, terlihat di CloudWatch Logs |
+| Deployment dependency pypdf | Berhasil |
+| Penghitungan halaman | Berhasil: dokumen uji terdeteksi 8 halaman |
+| Estimasi biaya | Perhitungan 8 halaman × Rp500 menghasilkan Rp4.000; output akhir belum terverifikasi sepenuhnya |
 | S3 CORS dan Function URL CORS | Dikonfigurasi; belum diuji dengan frontend |
 
-### Belum diuji atau diimplementasikan
-
-- Presigned POST/GET dan upload dari frontend.
-- CRUD endpoint, dashboard, dan manajemen status pesanan.
-- Pembaruan metadata pesanan setelah PDF diproses.
-- Frontend.
+Fitur pada bagian [Direncanakan](#direncanakan), termasuk presigned POST/GET dan frontend, belum diuji.
 
 ## Deployment
 
